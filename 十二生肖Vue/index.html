@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+		<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<img src="img/qq.jpeg" @click="show()" style="width: 500px; height: 400px;"/>
+			
+			<div style="margin-left: 600px;margin-top: -300px;"> 
+			<button @click="genhuan()" class="btn btn-primary">更换</button>
+			<button @click="tishi()" class="btn btn-info">提示</button>
+			<button @click="jieguo()" class="btn btn-success">结果</button>
+			<br />
+			<br />
+			<font size="4">请依次点击：</font>
+			  <label v-for="item in yanzheng" style="font-size: large;">
+				  
+				  <span>  {{shengxiao[item]}}</span>
+				
+					<!-- <span v-if="item==0">鼠</span>
+					<span v-if="item==1">牛</span>
+					<span v-if="item==2">虎</span>
+					<span v-if="item==3">兔</span>
+					<span v-if="item==4">龙</span>
+					<span v-if="item==5">蛇</span>
+					<span v-if="item==6">马</span>
+					<span v-if="item==7">羊</span>
+					<span v-if="item==8">猴</span>
+					<span v-if="item==9">鸡</span>
+					<span v-if="item==10">狗</span>
+				    <span v-if="item==11">猪</span> -->
+										
+			  </label>
+			  
+			  <div id="finish" style="display:none;">
+				  <br /> <br /> <br />
+				  你已经点击: <span style="font-size: large;">{{cliciCount}}</span>,成功完成验证: <span style="font-size: large;">{{finishCount}}</span>
+				   <br />  <br />
+				    <label v-for="item in finishyanzhen" style="font-size: large;">
+						&nbsp;&nbsp;<span>{{item}}<br /></span>
+						
+					</label>
+					<br />
+					<label v-if="finishCount>=1">
+					<!-- 有一条记录以上才显示按钮 -->
+					&nbsp;&nbsp;<button @click="clear()" class="btn btn-warning">清空</button>&nbsp;
+					<button @click="jieguo()" class="btn btn-success">隐藏</button>
+					</label>
+			  </div>
+			
+			</div> 
+			
+		
+		<script>
+			let v=new Vue({
+				el:"#app",
+				data:{
+					flag:0,
+					clickx:0,
+					clicky:0,
+					//存放所以生肖的左上角到右下角的位置，如鼠的左上角（20,21），右下角（94,101）
+					location:[
+					 [20,21,94,101],[157,20,225,101],[280,22,362,103],[424,16,491,101],
+					 [15,151,99,238],[159,170,228,234],[295,157,358,236],[416,162,488,242],
+					 [18,298,93,368],[163,290,225,366],[286,298,360,373],[419,301,491,369]
+					],
+					cliciCount:0,//点击次数
+					finishCount:0,//完成验证次数
+					finishyanzhen:[],//完成验证的历史记录
+					shengxiao:["鼠","牛","虎","兔","龙","蛇","牛","羊","猴","鸡","狗","猪"],
+					yanzheng:[0,1,2,3,4]//用来表示验证的
+					//0代表老鼠，1代表牛，2代表老虎，3代表兔子，4代表龙
+					//5代表蛇，6代表牛，7代表羊，8代表猴，9代表鸡，10代表狗，11代表猪
+				},
+				methods:{
+					show(){
+					
+						v.clickx=event.clientX;
+						v.clicky=event.clientY;
+						//console.log(v.clickx+","+v.clicky); //点击可以输出当前鼠标点击的位置
+							v.cliciCount++;//一点击次数加1，表示总次数
+						let yanzheng_one=v.yanzheng[0];
+						let yanzheng_two=v.yanzheng[1];
+						let yanzheng_three=v.yanzheng[2];
+						let yanzheng_four=v.yanzheng[3];
+						let yanzheng_five=v.yanzheng[4];
+						if(v.flag==0&&v.clickx>=v.location[yanzheng_one][0]&&v.clickx<=v.location[yanzheng_one][2]&&v.clicky>=v.location[yanzheng_one][1]&&v.clicky<=v.location[yanzheng_one][3]){
+							v.flag=1;
+							console.log("第一次点击"+v.flag);
+							console.log(v.clickx+","+v.clicky);
+						}
+						if(v.flag==1&&v.clickx>=v.location[yanzheng_two][0]&&v.clickx<=v.location[yanzheng_two][2]&&v.clicky>=v.location[yanzheng_two][1]&&v.clicky<=v.location[yanzheng_two][3]){
+							v.flag=2;
+							console.log("第二次点击"+v.flag);
+							console.log(v.clickx+","+v.clicky);
+						}
+						if(v.flag==2&&v.clickx>=v.location[yanzheng_three][0]&&v.clickx<=v.location[yanzheng_three][2]&&v.clicky>=v.location[yanzheng_three][1]&&v.clicky<=v.location[yanzheng_three][3]){
+							v.flag=3;
+							console.log("第三次点击"+v.flag);
+							console.log(v.clickx+","+v.clicky);
+						}
+						if(v.flag==3&&v.clickx>=v.location[yanzheng_four][0]&&v.clickx<=v.location[yanzheng_four][2]&&v.clicky>=v.location[yanzheng_four][1]&&v.clicky<=v.location[yanzheng_four][3]){
+							v.flag=4;
+							console.log("第四次点击"+v.flag);
+							console.log(v.clickx+","+v.clicky);
+						}
+						if(v.flag==4&&v.clickx>=v.location[yanzheng_five][0]&&v.clickx<=v.location[yanzheng_five][2]&&v.clicky>=v.location[yanzheng_five][1]&&v.clicky<=v.location[yanzheng_five][3]){
+							v.flag=5;
+							console.log("第五次点击"+v.flag);
+							console.log(v.clickx+","+v.clicky);
+							let str=v.shengxiao[yanzheng_one]+"-"+v.shengxiao[yanzheng_two]+"-"+v.shengxiao[yanzheng_three]+"-"
+						         	+v.shengxiao[yanzheng_four]+"-"+v.shengxiao[yanzheng_five]+"="+"完成验证！";
+							v.finishyanzhen[v.finishCount]=str;
+							v.flag=0;
+							v.finishCount++;
+							alert("按顺序点击5次完毕")
+							
+						}
+					},	
+					genhuan(){
+						v.flag=0;//避免之前已经完成验证了几次
+						let i=0;
+						let arr=[];
+						 for(;i<5;i++){
+							 /*
+							  v.yanzheng[i]= Math.floor(Math.random()*11); //产生0到11
+							 this.$set(this.yanzheng,i,this.yanzheng[i]);  //直接替换（v.yanzheng[i]= Math.floor(Math.random()*11);）页面不刷新，采用set或者直接替换整个数组
+						      if(v.yanzheng.indexOf(v.yanzheng[i])){//如果验证数组里面有值了，就i--，因为后面会执行i++,所以i不变，继续随机生成
+								  i--;
+							  }*/
+							 let value=Math.floor(Math.random()*11); //产生0到11
+							 //alert(value+"---"+i+"===="+arr.indexOf(value))
+							  if(arr.indexOf(value)==-1){  //等于-1，不在数组里，
+								   arr[i]=value;
+							  }else{//在数组里就i--，因为后面会执行i++,所以i不变，继续随机生成
+								 i--;
+							  }
+						
+						 }
+						 v.yanzheng=arr;//直接替换（v.yanzheng[i]= Math.floor(Math.random()*11);）页面不刷新，采用set或者直接替换整个数组
+					},
+					jieguo(){
+						let s=document.getElementById("finish").style.display;
+						if(s=="none"){
+							document.getElementById("finish").style.display="block";
+						}else{
+							document.getElementById("finish").style.display="none";
+						}
+						
+					},
+					tishi(){
+						alert("下一次点击的是："+v.shengxiao[v.yanzheng[v.flag]])
+					},
+					clear(){
+						v.cliciCount=0;
+						v.finishCount=0;
+						v.finishyanzhen=[];
+					}
+					
+				}
+			})
+		</script>
+	</body>
+</html>
